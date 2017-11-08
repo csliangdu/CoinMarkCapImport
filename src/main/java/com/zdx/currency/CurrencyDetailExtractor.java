@@ -36,7 +36,7 @@ public class CurrencyDetailExtractor {
 		responseContext.put("startTime", t1);
 		ptb.execute(new ParallecResponseHandler(){
 			public void onCompleted(ResponseOnSingleTask res, Map<String, Object> responseContext) {
-				CurrencyMarket cm = new CurrencyMarket();
+				Market cm = new Market();
 				Long startTime = (Long) responseContext.get("startTime");
 				Document doc = Jsoup.parse(res.getResponseContent());
 				
@@ -144,7 +144,7 @@ public class CurrencyDetailExtractor {
 						for (int i=0; i < trs.size(); i++){
 							Elements e7 = trs.get(i).getElementsByTag("td");
 							if (e7.size() >= 6){
-								BaseCurrencytData cd = new BaseCurrencytData();
+								DailyDetail cd = new DailyDetail();
 								cd.rankPos = Integer.parseInt(e7.get(0).text());
 								cd.exchangeName = e7.get(1).text();//Bitcoin
 								cd.pairLink = e7.get(2).getElementsByTag("a").attr("href");////https://www.bitfinex.com/trading/BTCUSD

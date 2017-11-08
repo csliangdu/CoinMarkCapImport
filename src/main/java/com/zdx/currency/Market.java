@@ -3,34 +3,21 @@ package com.zdx.currency;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-public class CurrencyMarket {
-	//https://coinmarketcap.com/exchanges/bittrex/
-	String currencyName = "";
-	String lowerRegularName = "";
-	String symbol = "";
-	int rankPos = 0;
-	double price = 0.0;
-	String website1 = "";
-	String website2 = "";
-	String website3 = "";
-	String messageboard1 = "";
-	String messageboard2 = "";
-	String messageboard3 = "";
-	String explorer1 = "";
-	String explorer2 = "";
-	String explorer3 = "";
-	int isMineable = 0;
-	int isCoin = 0;
-	int isToken = 1;
-	double marketCapUSD = 0.0;
-	double marketCapBTC = 0.0;
-	double vol24USD = 0.0;
-	double vol24BTC = 0.0;
-	double circulatingSupply = 0.0;
-	double maxSupply = 0.0;
-	public long updateTime = 0;
+public class Market {
+
+	//已有数据 新数据->新数据替代已有数据
+	public Meta meta = new Meta();
 	
-	public ArrayList<BaseCurrencytData> exchangeActiveMarkets = new ArrayList<BaseCurrencytData>();
+	//已有数据 新数据->旧数据进仓库，新数据展示
+	public DailySummary ds = new DailySummary();
+	
+	//已有数据 新数据->新旧数据合并进仓库
+	public DailyHistory dh = new DailyHistory();
+	
+	//已有数据 新数据->旧数据进仓库，新数据展示
+	public ChartDetail cd = new ChartDetail();
+	
+	public ArrayList<DailyDetail> exchangeActiveMarkets = new ArrayList<DailyDetail>();
 
 	public String toString(){
 		String s1 = exchangeActiveMarkets.toString();
