@@ -11,7 +11,7 @@ import com.zdx.common.DataFormat;
 public class MarketMetaSummary {
 	//https://coinmarketcap.com/exchanges/bittrex/
 	String exchangeName = "";
-	String lowerRegularName = "";
+	public String lowerRegularName = "";
 	double volUSD = 0.0;
 	double volBTC = 0.0;	
 	String twitterLink = "";

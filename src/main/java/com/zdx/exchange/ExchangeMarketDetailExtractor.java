@@ -18,7 +18,7 @@ public class ExchangeMarketDetailExtractor {
 		ParallelClient pc = new ParallelClient();
 		InputStream is = MarketlDailyExtractor.class.getClass().getResourceAsStream("/exchange_name");
 		ArrayList<String> exchangeNames = FileHandler.getArrayListFromFile(is);
-
+		
 		final HashMap<String, Object> responseContext = new HashMap<String, Object>();
 		ParallelTaskBuilder ptb = 
 				pc.prepareHttpGet("/exchanges/$EXCHANGE/")
@@ -28,8 +28,7 @@ public class ExchangeMarketDetailExtractor {
 				.setResponseContext(responseContext);
 
 		String destDir = System.getProperty("user.dir") + File.separator + "Exchange";
-		int r = FileHandler.mkdir(destDir);
-		if (r == 0){
+		if (FileHandler.mkdir(destDir) == 0){
 			return;
 		}
 		long startTime = System.currentTimeMillis();		
@@ -38,7 +37,7 @@ public class ExchangeMarketDetailExtractor {
 
 		ExchangeMarketHandler emHandler = new ExchangeMarketHandler(); 
 
-		ptb.execute(emHandler);
+		ptb.execute(emHandler);	
 	}
 }
 

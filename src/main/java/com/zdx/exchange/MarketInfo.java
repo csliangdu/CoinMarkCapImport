@@ -4,9 +4,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class MarketInfo {
-	MarketMetaSummary mms = new MarketMetaSummary();
+	public MarketMetaSummary mms = new MarketMetaSummary();
 
-	ArrayList<MarketCoinDetail> marketCoinDetailList = new ArrayList<MarketCoinDetail>();
+	public ArrayList<MarketCoinDetail> marketCoinDetailList = new ArrayList<MarketCoinDetail>();
 
 	public String toString(){
 		String s1 = marketCoinDetailList.toString();

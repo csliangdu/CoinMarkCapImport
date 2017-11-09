@@ -16,7 +16,7 @@ public class ExchangeMarketHandler implements ParallecResponseHandler {
 	public void onCompleted(ResponseOnSingleTask res, Map<String, Object> responseContext) {
 		Long startTime = (Long) responseContext.get("startTime");
 		String destDir = (String) responseContext.get("destDir");
-
+		
 		MarketInfo exchangeMarketData = new MarketInfo();
 
 		if (res.getStatusCodeInt() == 200){
