@@ -83,4 +83,44 @@ public class DataFormat {
 		}
 		return "";
 	}
+
+	public static Double getDoubleFromUSDStr(String t1){
+		//t1:$? or $16.68 M	or $1.17 K or $1 or $2.49 B
+		Double val = 0.0;
+		if (t1.contains("$")){
+			t1 = t1.replaceAll("\\$", "");
+		}
+		if (t1.contains(",")){
+			t1 = t1.replaceAll(",", "");
+		}
+		if (t1.contains("?")){
+			t1 = t1.replaceAll("\\?", "0");
+		}
+		t1 = t1.toLowerCase();
+		String [] tmp = t1.split(" ");
+		if (tmp.length == 1){
+			val = Double.parseDouble(tmp[0]);
+		}
+		if (tmp.length == 2){
+			if (tmp[1] == "b"){
+				val = val * 100000000;
+			} else if (tmp[1] == "m"){
+				val = val  * 1000000;
+			} else if (tmp[1] == "k"){
+				val = val  * 1000;
+			}
+		}
+		return val;
+	}
+
+	public static String removeCharacter(String x){
+		x = x.trim();
+		if (x.contains(",")){
+			x = x.replaceAll(",", "");
+		}
+		if (x.contains("-")){
+			x = x.replaceAll("-", "0");
+		}
+		return x;		
+	}
 }

@@ -8,7 +8,11 @@ public class Config {
 	public static String volMonthRankURL = "https://coinmarketcap.com/currencies/volume/monthly/";
 	public static String vol24RankURL = "https://coinmarketcap.com/currencies/volume/24-hour/";
 	
-	public static String topGainers = "https://coinmarketcap.com/gainers-losers/";
-	public static String topLosers = "https://coinmarketcap.com/gainers-losers/";
+	public static String topGainersLosers = "https://coinmarketcap.com/gainers-losers/";
+	
+	public static String exchange24ALLRankURL = "https://coinmarketcap.com/exchanges/volume/24-hour/all/";
+	public static String exchange24FeeRankURL = "https://coinmarketcap.com/exchanges/volume/24-hour/";
+	public static String exchange24NoFeeRankURL = "https://coinmarketcap.com/exchanges/volume/24-hour/no-fees/";
+	
 			
 }

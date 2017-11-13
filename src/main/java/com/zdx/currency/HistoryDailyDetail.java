@@ -35,7 +35,7 @@ public class HistoryDailyDetail {
 
 	public static ArrayList<HistoryDailyDetail> getHistoryDailyDetailFromDoc(Document doc, Long startTime){
 		ArrayList<HistoryDailyDetail> ddList = new ArrayList<HistoryDailyDetail>();
-		Elements e6 = doc.select("#historical-data > div > div.table-responsive > table > tbody");				
+		Elements e6 = doc.select("#historical-data > div > div.table-responsive > table > tbody");
 		if (e6.isEmpty()){
 			return ddList;
 		}
@@ -49,13 +49,19 @@ public class HistoryDailyDetail {
 			if ( e7.size() >= 6){
 				HistoryDailyDetail cd = new HistoryDailyDetail();
 				cd.date = DataFormat.getDateFromMonth(e7.get(0).text());
-				cd.openPrice = Double.parseDouble(e7.get(1).text());//0.051657
-				cd.highPrice = Double.parseDouble(e7.get(2).text());//0.051657
-				cd.lowPrice = Double.parseDouble(e7.get(3).text());//0.051657
-				cd.closePrice = Double.parseDouble(e7.get(4).text());//0.051657
-				cd.volumeUSD = Double.parseDouble(e7.get(5).text().replaceAll(",", ""));//82,603
-				cd.marketCapUSD = Double.parseDouble(e7.get(6).text().replaceAll(",", ""));//82,603
-				cd.updateTime = startTime;
+				String t1 = DataFormat.removeCharacter(e7.get(1).text());
+				cd.openPrice = Double.parseDouble(t1);//0.051657
+				String t2 = DataFormat.removeCharacter(e7.get(2).text());
+				cd.highPrice = Double.parseDouble(t2);//0.051657
+				String t3 = DataFormat.removeCharacter(e7.get(3).text());
+				cd.lowPrice = Double.parseDouble(t3);//0.051657
+				String t4 = DataFormat.removeCharacter(e7.get(4).text());
+				cd.closePrice = Double.parseDouble(t4);//0.051657
+				String t5 = DataFormat.removeCharacter(e7.get(5).text());
+				cd.volumeUSD = Double.parseDouble(t5);//82,603
+				String t6 = DataFormat.removeCharacter(e7.get(6).text());
+				cd.marketCapUSD = Double.parseDouble(t6);//82,603
+				cd.updateTime = startTime;			
 				ddList.add(cd);
 			}
 		}

@@ -17,9 +17,7 @@ public class ChartMarketHandler implements ParallecResponseHandler {
 	public void onCompleted(ResponseOnSingleTask res, Map<String, Object> responseContext) {		
 		String destDir = (String) responseContext.get("destDir");
 		HashMap<String, String> currencyLatestMap = (HashMap<String, String>) responseContext.get("currencyLatestMap");
-		if (res.getStatusCodeInt() != 200){
-			return;
-		}
+		HashMap<String, String> failedCurrencyMap = (HashMap<String, String>) responseContext.get("failedCurrencyMap");
 		String[] tmp = res.getRequest().getResourcePath().split("/");
 		String coinName = "";
 		String stamp1 = "";
@@ -29,19 +27,27 @@ public class ChartMarketHandler implements ParallecResponseHandler {
 			stamp1 = tmp[3];
 			stamp2 = tmp[4];
 		}
-		if (stamp1.isEmpty() || stamp2.isEmpty()){
+		if (res.getError()){
+			failedCurrencyMap.put(coinName,"ParallecError");
 			return;
-		}
-		currencyLatestMap.put(coinName, stamp2);
-		
-		//更新配置文件中的时间戳，但是不生成空Json文件
-		JSONObject jsonObject = JSON.parseObject(res.getResponseContent());
-		for (Map.Entry<String, Object> entry : jsonObject.entrySet()) {
-			if ("[]".equals(String.valueOf(entry.getValue()))){
-				return;			
+		} else if (res.getStatusCodeInt() != 200){
+			failedCurrencyMap.put(coinName,"StatusNot200");
+			return;
+		} else if (res.getStatusCodeInt() == 200){
+			if (stamp1.isEmpty() || stamp2.isEmpty()){
+				failedCurrencyMap.put(coinName,"EmptyTimeStamp");
+				return;
 			}
+			currencyLatestMap.put(coinName, stamp2);
+			//更新配置文件中的时间戳，但是不生成空Json文件
+			JSONObject jsonObject = JSON.parseObject(res.getResponseContent());
+			for (Map.Entry<String, Object> entry : jsonObject.entrySet()) {
+				if ("[]".equals(String.valueOf(entry.getValue()))){
+					return;			
+				}
+			}
+			String filePath = destDir + File.separator + coinName + "_" + stamp1 + "_" + stamp2;
+			FileHandler.writeFile(filePath, res.getResponseContent());
 		}
-		String filePath = destDir + File.separator + coinName + "_" + stamp1 + "_" + stamp2;
-		FileHandler.writeFile(filePath, res.getResponseContent());
 	}
 }
