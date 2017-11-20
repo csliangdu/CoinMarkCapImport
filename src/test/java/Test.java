@@ -1,9 +1,12 @@
 
 
+import java.util.HashSet;
+
 import com.zdx.currency.ChartMarketExtractor;
 import com.zdx.currency.HistoryMarketExtractor;
 import com.zdx.currency.MarketlDailyExtractor;
 import com.zdx.exchange.ExchangeMarketDetailExtractor;
+
 import com.zdx.rank.CurrencyVol24;
 import com.zdx.rank.CurrencyVolMonth;
 import com.zdx.rank.ExchangeVol24;
@@ -14,11 +17,11 @@ import com.zdx.utils.ExtractCurrencyRegularName;
 public class Test {
 
 	public static void main(String[] args){
-
+		
 		
 		try {
-			ChartMarketExtractor.execute("C:\\ZDX\\code\\CoinMarkCapImport\\data\\currency_chart_latest_timestamp");
-			//ExchangeMarketDetailExtractor.execute();
+			//ChartMarketExtractor.execute("C:\\ZDX\\code\\CoinMarkCapImport\\data\\currency_chart_latest_timestamp");
+			ExchangeMarketDetailExtractor.execute();
 			//ExchangePairExtractor.execute("C:\\ZDX\\code\\CoinMarkCapImport\\data\\exchange_pairs.json");
 			//MarketlDailyExtractor.execute();
 			//CurrencyStartDateExtractor.excute();
@@ -27,7 +30,7 @@ public class Test {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		 
+		//ExchangeTopPairs.readTopVol100MSetFromFile("C:\\ZDX\\code\\CoinMarkCapImport\\Exchange\\1511001990229\\topVol100M.json");
 		
 		/*
 		TopGainerLoser.execute();

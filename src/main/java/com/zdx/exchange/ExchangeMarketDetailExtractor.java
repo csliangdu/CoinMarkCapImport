@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map.Entry;
 
 import io.parallec.core.ParallelClient;
@@ -18,6 +19,7 @@ public class ExchangeMarketDetailExtractor {
 	final static long startTime = System.currentTimeMillis();
 	final static String destDir = System.getProperty("user.dir") + File.separator + "Exchange" + File.separator + startTime;
 	final static HashMap<String, String> failedExchangeMap = new HashMap<String, String>();
+	final static HashMap<String, HashSet<String>> topVol100MMap = new HashMap<String, HashSet<String>>(); 
 
 	public static void execute() throws InterruptedException{		
 		InputStream is = MarketlDailyExtractor.class.getClass().getResourceAsStream("/exchange_name");
@@ -46,9 +48,11 @@ public class ExchangeMarketDetailExtractor {
 			}
 			oneBatch(exchangeNamesLeft);
 			//Thread.sleep(20000);
-			
+
 		}
 		FileHandler.writeFile(destDir + File.separator + "failed.json", failedToString());
+		FileHandler.writeFile(destDir + File.separator + "topVol100M.json", topVol100MToString());
+		//FileHandler.writeFile(destDir + File.separator + "topVol100MPair.json", topVol100MPairToString());
 	}
 
 	public static void oneBatch(ArrayList<String> exchangeNamesLeft){
@@ -62,6 +66,7 @@ public class ExchangeMarketDetailExtractor {
 		responseContext.put("startTime", startTime);
 		responseContext.put("destDir", destDir);
 		responseContext.put("failedCurrencyMap", failedExchangeMap);
+		responseContext.put("topVol100MMap", topVol100MMap);
 		ExchangeMarketHandler emHandler = new ExchangeMarketHandler(); 
 		ptb.execute(emHandler);
 	}
@@ -84,5 +89,35 @@ public class ExchangeMarketDetailExtractor {
 		sb_tmp = "[" + sb_tmp + "]";
 		sb_tmp = JsonFormatTool.formatJson(sb_tmp);
 		return sb_tmp;
-	}	
+	}
+
+	public static String topVol100MToString(){
+		StringBuffer sb = new StringBuffer();		
+		for (Entry<String, HashSet<String>> x : topVol100MMap.entrySet()){
+			sb.append("{");
+			sb.append("\"exchangeName\":\"" + x.getKey() + "\",");
+			HashSet<String> y = x.getValue();
+			StringBuffer sb2 = new StringBuffer();
+			sb2.append("\"tickerPair\":[" );
+			for (String z : y){
+				sb2.append("\"" + z + "\",");
+			}
+			String sb2_tmp = sb2.toString();
+			if (!sb2_tmp.isEmpty()){
+				sb2_tmp = sb2_tmp.substring(0, sb2_tmp.lastIndexOf(","));
+			}
+			sb2_tmp = sb2_tmp + "]},";
+			sb.append(sb2_tmp);
+		}
+
+		String sb_tmp = sb.toString();
+		if (!sb_tmp.isEmpty()){
+			sb_tmp = sb_tmp.substring(0, sb_tmp.lastIndexOf(","));
+		}
+		sb_tmp = "[" + sb_tmp + "]";
+		sb_tmp = JsonFormatTool.formatJson(sb_tmp);
+		return sb_tmp;
+	}
+
+	
 }

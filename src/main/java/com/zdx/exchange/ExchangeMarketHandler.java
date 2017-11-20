@@ -1,7 +1,9 @@
 package com.zdx.exchange;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import org.jsoup.Jsoup;
@@ -18,6 +20,8 @@ public class ExchangeMarketHandler implements ParallecResponseHandler {
 	public void onCompleted(ResponseOnSingleTask res, Map<String, Object> responseContext) {
 		Long startTime = (Long) responseContext.get("startTime");
 		String destDir = (String) responseContext.get("destDir");
+		@SuppressWarnings("unchecked")
+		HashMap<String, HashSet<String>> topVol100MMap = (HashMap<String, HashSet<String>>) responseContext.get("topVol100MMap");
 
 		MarketInfo exchangeMarketData = new MarketInfo();
 		@SuppressWarnings("unchecked")
@@ -43,6 +47,16 @@ public class ExchangeMarketHandler implements ParallecResponseHandler {
 			exchangeMarketData.mms.updateTime = startTime;
 
 			exchangeMarketData.marketCoinDetailList = MarketCoinDetail.getCurrentDailyDetailFromDoc(doc, startTime);
+			for (MarketCoinDetail x : exchangeMarketData.marketCoinDetailList){
+				if (x.vol24USD > 1000000){
+					HashSet<String> pairSet = new HashSet<String>();
+					if (topVol100MMap.containsKey(exchangeName)){
+						pairSet = topVol100MMap.get(exchangeName);
+					}
+					pairSet.add(x.pair);
+					topVol100MMap.put(exchangeName, pairSet);
+				}
+			}
 
 			String filePath = destDir + File.separator + exchangeMarketData.mms.lowerRegularName;
 			String jsonString = JsonFormatTool.formatJson(exchangeMarketData.toString());
